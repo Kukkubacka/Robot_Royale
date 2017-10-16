@@ -22,8 +22,9 @@ Resource       ${EXECDIR}/resources/AppiumKeywords.robot
 # robot -d output -L DEBUG -b debug.txt --include Appium tests/appium.robot
 # robot -d output -L DEBUG -b debug.txt --exclude Test tests/appium.robot
 # Variable
-# robot -d output -L DEBUG -b debug.txt --variable WEBMAIL_URL:beta.wmtest.saunalahti.fi tests/appium.robot
+# robot -d output -L DEBUG -b debug.txt --variable GAME:Royale tests/appium.robot
 
+# robot -d output -L DEBUG -b debug.txt --include Royale tests/appium.robot
 
 *** Test Cases ***
 
@@ -33,10 +34,6 @@ Appium Open Browser
     [Documentation]     Based on Jarkko's Example
     [Tags]              AppWeb
     ${index}=     AppiumLibrary.Open Application    ${APPIUMSERV}    &{capabilities}
-
-    # index pitais ehka maaritella myohempaa kayttoa varten
-    # ${index}=  Appium.Open Application  ....
-    # Return From Keyword  ${index}
 
     AppiumLibrary.Go To Url   http://www.google.com
     Sleep    2 secs
@@ -74,18 +71,25 @@ Appium Open Appl-1
 # adb shell loitsu
 # com.klabjan.movethematchespuzzles/.GameMatchesActivity
 
-# robot -d output -L DEBUG -b debug.txt --include Application tests/appium.robot
-
-# &{capabilities}         platformName=Android 
-# ...                     platformVersion=7.1 
-# ...                     deviceName=QV700SML0K 
-# ...                     automationName=UIAutomator2 
-# ...                     appPackage=com.android.browser 
-# ...                     appActivity=com.android.browser.BrowserActivity
-# ...                     browserName=Chrome
-# ...		                connectHardwareKeyboard=false
-
-
+Open Clash Royale
+    [Documentation]     Open Clash Royale
+    [Tags]              Application     Royale
+    # modify capabilities
+    &{app_cap}=    Create Dictionary
+    Set To Dictionary       ${app_cap}      platformName        Android
+    Set To Dictionary       ${app_cap}      platformVersion     7.1
+    Set To Dictionary       ${app_cap}      deviceName          QV700SML0K
+    Set To Dictionary       ${app_cap}      automationName      UIAutomator2
+    Set To Dictionary       ${app_cap}      appPackage
+    ...                     com.supercell.clashroyale
+    Set To Dictionary       ${app_cap}      appActivity
+    ...                     com.supercell.clashroyale.GameApp
+    Log Many         &{app_cap}
+    ${index}=     AppiumLibrary.Open Application    ${APPIUMSERV}    &{app_cap}
+    Sleep    3 secs
+    AppiumLibrary.Capture Page Screenshot   ${EXECDIR}/images/App_1.png
+    Sleep    10 secs
+    AppiumLibrary.Close Application
 
 
 
