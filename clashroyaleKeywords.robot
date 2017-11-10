@@ -33,6 +33,11 @@ Read Index From File
     \    @{tmp}=             Split String    ${line}       :
     \    ${SS_INDEX}=        Set Variable       @{tmp}[1]
 
+Write Index to File
+    [Arguments]             ${Last_Index}
+    [Documentation]         Write Screenshot index to config file.
+    Log                     ${Last_Index}
+    Append To File          ./tests/config.txt      ${Last_Index}
 
 
 Take Index Screenshot
